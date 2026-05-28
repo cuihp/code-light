@@ -65,6 +65,16 @@ Built artifacts:
 
 That's it. On macOS the app runs as a pure menu bar accessory with no dock icon.
 
+### macOS: "App is damaged" or "cannot be opened" error
+
+If you build from source or download an unsigned build, macOS may block the app. To fix this:
+
+```bash
+xattr -cr /path/to/code-light.app
+```
+
+Then open it by **right-clicking** the app and selecting **Open** → **Open** again in the dialog. You only need to do this once.
+
 ### Multi-session support
 
 If you run multiple Claude Code sessions in different terminals, Code Light tracks all of them simultaneously. The icon reflects the highest-priority state across all active sessions (Error > Waiting > Working > Completed > Idle).
