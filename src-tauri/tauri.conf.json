@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Code Light",
+  "version": "0.1.0",
+  "identifier": "com.cuihuapeng.code-light",
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon_32x32.png",
+      "icons/icon_128x128.png",
+      "icons/icon_128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [
+      "../hooks/*"
+    ],
+    "macOS": {
+      "infoPlist": "Info.plist"
+    }
+  }
+}

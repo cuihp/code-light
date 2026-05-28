@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Read(//Users/cuihuapeng/.claude-light/**)",
+      "Read(//Users/cuihuapeng/.code-light/**)",
+      "Bash(python3 -m json.tool)",
+      "Bash(pnpm tauri *)",
+      "Bash(open *)",
+      "Bash(mkdir -p icon.iconset)",
+      "Bash(sips -z 16 16 icon_16x16.png --out icon.iconset/icon_16x16.png -s format png)",
+      "Bash(sips -z 32 32 icon_16x16@2x.png --out icon.iconset/icon_16x16@2x.png -s format png)",
+      "Bash(sips -z 32 32 icon_32x32.png --out icon.iconset/icon_32x32.png -s format png)",
+      "Bash(sips -z 64 64 icon_32x32@2x.png --out icon.iconset/icon_32x32@2x.png -s format png)",
+      "Bash(python3 -c ' *)",
+      "Bash(iconutil -c icns icon.iconset -o icon.icns)",
+      "Bash(pkill -f \"Code Light\")",
+      "Bash(cargo check *)"
+    ]
+  }
+}
