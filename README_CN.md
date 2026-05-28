@@ -2,7 +2,7 @@
 
 [English](./README.md)
 
-一个为 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 设计的 macOS 菜单栏状态指示灯。它可以在系统托盘显示一个彩色指示图标，让你一眼就能看到 AI 编程助手正在做什么 —— 不需要一直盯着终端窗口。
+一个为 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 设计的系统托盘状态指示灯。它可以在系统托盘显示一个彩色指示图标，让你一眼就能看到 AI 编程助手正在做什么 —— 不需要一直盯着终端窗口。
 
 ## 状态指示灯
 
@@ -22,22 +22,23 @@ Code Light 使用基于文件的轮询机制：
 
 1. **Shell 脚本**作为 Claude Code 生命周期钩子注册（写入 `~/.claude/settings.json`）
 2. 每个钩子将 JSON 状态文件写入 `~/.code-light/sessions/<会话ID>.json`
-3. 菜单栏应用每秒轮询这些文件，并更新托盘图标
+3. 托盘应用每秒轮询这些文件，并更新图标
 
 ```
-Claude Code 事件 → 钩子脚本 → ~/.code-light/sessions/*.json → 菜单栏图标
+Claude Code 事件 → 钩子脚本 → ~/.code-light/sessions/*.json → 托盘图标
 ```
 
-这种方式不需要网络端口、不需要 API、不需要额外配置 —— 只依赖磁盘文件。
+零网络端口、零 API、零配置 —— 只依赖磁盘文件。
 
 ## 安装
 
 ### 前提条件
 
-- macOS 12+
+- macOS 12+ / Linux / Windows 10+
 - 已安装并配置 [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
 - Node.js 18+ 和 [pnpm](https://pnpm.io/)
 - [Rust](https://rustup.rs/) 工具链
+- Windows 用户需安装 [Git for Windows](https://git-scm.com/)（提供 bash 环境）
 
 ### 从源码构建
 
@@ -48,15 +49,21 @@ pnpm install
 pnpm tauri build
 ```
 
-构建产物位于 `src-tauri/target/release/bundle/macos/code-light.app`，拖到「应用程序」文件夹即可启动。
+构建产物：
+
+| 平台 | 路径 |
+|------|------|
+| macOS | `src-tauri/target/release/bundle/macos/code-light.app` |
+| Linux | `src-tauri/target/release/bundle/deb/code-light_*.deb` |
+| Windows | `src-tauri/target/release/bundle/nsis/code-light_*.exe` |
 
 ## 使用方法
 
-1. **启动** Code Light —— 菜单栏会出现一个灰色圆点
+1. **启动** Code Light —— 系统托盘会出现一个灰色圆点
 2. **点击**图标，选择 **"Setup Hooks"** —— 自动将钩子脚本注册到 `~/.claude/settings.json`
-3. **在终端启动 Claude Code** —— 菜单栏图标会随着 Agent 的工作自动变色
+3. **在终端启动 Claude Code** —— 托盘图标会随着 Agent 的工作自动变色
 
-就这么简单。应用以纯菜单栏方式运行，不会出现在 Dock 栏。
+就这么简单。在 macOS 上应用以纯菜单栏方式运行，不会出现在 Dock 栏。
 
 ### 多会话支持
 
@@ -99,10 +106,9 @@ code-light/
 ├── src-tauri/                      # Tauri v2 / Rust 后端
 │   ├── src/
 │   │   ├── main.rs                 # 入口
-│   │   └── lib.rs                  # 应用逻辑（托盘图标、轮询、闪烁）
+│   │   └── lib.rs                  # 托盘图标、轮询、闪烁、钩子注册
 │   ├── icons/status/               # 状态指示灯图标（灰、绿、黄、红、蓝）
-│   ├── tauri.conf.json             # Tauri 配置
-│   └── Info.plist                  # macOS 配置：LSUIElement=true（无 Dock 图标）
+│   └── tauri.conf.json             # Tauri 配置
 ├── src/                            # 前端（无可见窗口，仅占位）
 ├── package.json
 └── vite.config.ts
