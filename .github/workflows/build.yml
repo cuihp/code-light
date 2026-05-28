@@ -1,4 +1,8 @@
-name: Build
+name: Build & Release
+
+permissions:
+  contents: write
+  packages: write
 
 on:
   push:
