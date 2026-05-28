@@ -285,6 +285,26 @@ fn shell_command(hooks_dir: &std::path::Path, script: &str) -> String {
     }
 }
 
+fn local_hooks_dir() -> PathBuf {
+    dirs::home_dir()
+        .unwrap_or_default()
+        .join(".code-light")
+        .join("hooks")
+}
+
+fn copy_hooks_to_local(src: &std::path::Path, dest: &std::path::Path) {
+    let _ = fs::create_dir_all(dest);
+    if let Ok(entries) = fs::read_dir(src) {
+        for entry in entries.flatten() {
+            let src_path = entry.path();
+            if src_path.is_file() {
+                let dest_path = dest.join(entry.file_name());
+                let _ = fs::copy(&src_path, &dest_path);
+            }
+        }
+    }
+}
+
 fn setup_hooks() {
     let settings_path = dirs::home_dir()
         .unwrap_or_default()
@@ -298,7 +318,9 @@ fn setup_hooks() {
         serde_json::Value::Object(Default::default())
     };
 
-    let hooks_path = get_hooks_dir();
+    let bundled_hooks = get_hooks_dir();
+    let hooks_path = local_hooks_dir();
+    copy_hooks_to_local(&bundled_hooks, &hooks_path);
 
     let hook_defs = serde_json::json!({
         "PreToolUse": [{ "matcher": "", "hooks": [{ "type": "command", "command": shell_command(&hooks_path, "pre-tool-use.sh") }] }],

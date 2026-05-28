@@ -15,7 +15,9 @@
       "Bash(python3 -c ' *)",
       "Bash(iconutil -c icns icon.iconset -o icon.icns)",
       "Bash(pkill -f \"Code Light\")",
-      "Bash(cargo check *)"
+      "Bash(cargo check *)",
+      "Bash(rustc --version)",
+      "Bash(rustup target *)"
     ]
   }
 }
